@@ -2,14 +2,19 @@
 
 namespace App\Entity;
 
+use App\Entity\shared\Timestamp;
 use App\Repository\OrderItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=OrderItemRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class OrderItem
 {
+
+    use Timestamp;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

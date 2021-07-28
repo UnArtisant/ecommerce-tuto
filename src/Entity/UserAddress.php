@@ -2,15 +2,22 @@
 
 namespace App\Entity;
 
+use App\Entity\shared\Address;
+use App\Entity\shared\Timestamp;
 use App\Repository\UserAddressRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=UserAddressRepository::class)
  * @ORM\Table(name="user_addresses")
+ * @ORM\HasLifecycleCallbacks()
  */
 class UserAddress
 {
+
+    use Timestamp;
+    use Address;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -24,25 +31,6 @@ class UserAddress
      */
     private User $owner;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $city;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $state;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $country;
-
-    /**
-     * @ORM\Column(type="string", length=45)
-     */
-    private string $zipcode;
 
     public function getId(): ?int
     {
@@ -61,51 +49,5 @@ class UserAddress
         return $this;
     }
 
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
 
-    public function setCity(string $city): self
-    {
-        $this->city = $city;
-
-        return $this;
-    }
-
-    public function getState(): ?string
-    {
-        return $this->state;
-    }
-
-    public function setState(string $state): self
-    {
-        $this->state = $state;
-
-        return $this;
-    }
-
-    public function getCOuntry(): ?string
-    {
-        return $this->country;
-    }
-
-    public function setCOuntry(string $country): self
-    {
-        $this->country = $country;
-
-        return $this;
-    }
-
-    public function getZipcode(): ?string
-    {
-        return $this->zipcode;
-    }
-
-    public function setZipcode(string $zipcode): self
-    {
-        $this->zipcode = $zipcode;
-
-        return $this;
-    }
 }

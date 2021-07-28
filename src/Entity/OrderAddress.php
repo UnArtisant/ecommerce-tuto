@@ -2,15 +2,22 @@
 
 namespace App\Entity;
 
+use App\Entity\shared\Address;
+use App\Entity\shared\Timestamp;
 use App\Repository\OrderAddressRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=OrderAddressRepository::class)
  * @ORM\Table(name="order_addresses")
+ * @ORM\HasLifecycleCallbacks()
  */
 class OrderAddress
 {
+
+    use Timestamp;
+    use Address;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -24,30 +31,6 @@ class OrderAddress
      */
     private Order $owner;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $address;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $city;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $state;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $country;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $zipcode;
 
     public function getId(): ?int
     {
@@ -66,63 +49,4 @@ class OrderAddress
         return $this;
     }
 
-    public function getAddress(): ?string
-    {
-        return $this->address;
-    }
-
-    public function setAddress(string $address): self
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
-
-    public function setCity(string $city): self
-    {
-        $this->city = $city;
-
-        return $this;
-    }
-
-    public function getState(): ?string
-    {
-        return $this->state;
-    }
-
-    public function setState(string $state): self
-    {
-        $this->state = $state;
-
-        return $this;
-    }
-
-    public function getCountry(): ?string
-    {
-        return $this->country;
-    }
-
-    public function setCountry(string $country): self
-    {
-        $this->country = $country;
-
-        return $this;
-    }
-
-    public function getZipcode(): ?string
-    {
-        return $this->zipcode;
-    }
-
-    public function setZipcode(string $zipcode): self
-    {
-        $this->zipcode = $zipcode;
-
-        return $this;
-    }
 }

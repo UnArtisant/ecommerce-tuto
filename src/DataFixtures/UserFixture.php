@@ -28,9 +28,10 @@ class UserFixture extends Fixture
         $password = $this->encoder->hashPassword($user, "password");
 
         $user->setEmail("raphael.barriet@icloud.com")
-             ->setPassword($password)
-             ->setRoles(["ROLE_ADMIN"])
-        ;
+            ->setPassword($password)
+            ->setFirstname("raphael")
+            ->setLastname("barriet")
+            ->setRoles(["ROLE_ADMIN"]);
 
         $manager->persist($user);
 

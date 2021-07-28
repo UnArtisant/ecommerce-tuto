@@ -2,15 +2,20 @@
 
 namespace App\Entity;
 
+use App\Entity\shared\Timestamp;
 use App\Repository\CartItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=CartItemRepository::class)
  * @ORM\Table(name="card_items")
+ * @ORM\HasLifecycleCallbacks()
  */
 class CartItem
 {
+
+    use Timestamp;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -45,7 +50,7 @@ class CartItem
         return $this->product;
     }
 
-    public function setProduct(?Products $product): self
+    public function setProduct(Products $product): self
     {
         $this->product = $product;
 
@@ -69,7 +74,7 @@ class CartItem
         return $this->owner;
     }
 
-    public function setOwner(?User $owner): self
+    public function setOwner(User $owner): self
     {
         $this->owner = $owner;
 

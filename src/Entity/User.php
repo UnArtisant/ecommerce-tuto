@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\shared\Timestamp;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,9 +13,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
+ * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+
+    use Timestamp;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -48,15 +53,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private string $lastname;
 
-    /**
-     * @ORM\Column(type="datetime_immutable")
-     */
-    private \DateTimeImmutable $createdAt;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private \DateTimeInterface $updatedAt;
 
     /**
      * @ORM\OneToMany(targetEntity=UserAddress::class, mappedBy="owner", orphanRemoval=true)
@@ -187,29 +183,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
 
     /**
      * @return Collection|UserAddress[]

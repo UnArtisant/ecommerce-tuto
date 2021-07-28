@@ -2,68 +2,80 @@
 
 namespace App\Entity;
 
+use App\Entity\shared\Image;
+use App\Entity\shared\Timestamp;
 use App\Repository\ProductsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=ProductsRepository::class)
+ * @ORM\HasLifecycleCallbacks()
+ * @Vich\Uploadable
  */
 class Products
 {
+
+    const PRODUCT_HIDDEN = 0;
+    const PRODUCT_VISIBLE = 1;
+
+    use Timestamp;
+    use Image;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      max = 255,
+     *      maxMessage = "Product name name cannot be longer than {{ limit }} characters"
+     * )
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(
+     *      max = 1255,
+     *      maxMessage = "Your message name cannot be longer than {{ limit }} characters"
+     * )
+     *
      */
-    private $description;
+    private string $description;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $image;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $price;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank
+     * @Assert\GreaterThan(0)
      */
-    private $status;
+    private int $price;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="integer")
+     * @Assert\NotBlank
      */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $updatedAt;
+    private int $status;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $createdBy;
+    private User $createdBy;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
      */
-    private $updatedBy;
+    private User $updatedBy;
 
     /**
      * @ORM\OneToMany(targetEntity=OrderItem::class, mappedBy="product")
@@ -104,17 +116,6 @@ class Products
         return $this;
     }
 
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(string $image): self
-    {
-        $this->image = $image;
-
-        return $this;
-    }
 
     public function getPrice(): ?int
     {
@@ -140,36 +141,14 @@ class Products
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
 
     public function getCreatedBy(): ?User
     {
         return $this->createdBy;
     }
 
-    public function setCreatedBy(?User $createdBy): self
+    public function setCreatedBy(User $createdBy): self
     {
         $this->createdBy = $createdBy;
 
@@ -181,7 +160,7 @@ class Products
         return $this->updatedBy;
     }
 
-    public function setUpdatedBy(?User $updatedBy): self
+    public function setUpdatedBy(User $updatedBy): self
     {
         $this->updatedBy = $updatedBy;
 
