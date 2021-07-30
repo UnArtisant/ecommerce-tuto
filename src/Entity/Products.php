@@ -8,6 +8,7 @@ use App\Repository\ProductsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -82,9 +83,25 @@ class Products
      */
     private $orderItems;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $slug;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="product")
+     */
+    private $reviews;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $stock;
+
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -141,8 +158,6 @@ class Products
         return $this;
     }
 
-
-
     public function getCreatedBy(): ?User
     {
         return $this->createdBy;
@@ -193,6 +208,65 @@ class Products
                 $orderItem->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
+    public function computeSlug(SluggerInterface $slugger) : void
+    {
+        if(empty($this->slug) || "-" === $this->slug) {
+            $this->slug = (string)$slugger->slug((string)$this)->lower();
+        }
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @return Collection|Review[]
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(Review $review): self
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews[] = $review;
+            $review->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(Review $review): self
+    {
+        if ($this->reviews->removeElement($review)) {
+            // set the owning side to null (unless already changed)
+            if ($review->getProduct() === $this) {
+                $review->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getStock(): ?int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(?int $stock): self
+    {
+        $this->stock = $stock;
 
         return $this;
     }

@@ -1,0 +1,38 @@
+{% set _currentPage = app.request.query.get('p') ?: 1 %}
+        {% set _currentRoute = app.request.attributes.get('_route') %}
+        {% set _currentParams = app.request.query.all %}
+        {% set nearbyPagesLimit = 4 %}
+        {% if lastPage > 1 %}
+            <div class="flex justify-center">
+                <nav class="flex rounded-md mt-8">
+                        {% if _currentPage > 1 %}
+                                <a class="py-2 px-4 leading-tight bg-white border border-gray-200 text-blue-700 border-r-0 ml-0 rounded-l hover:bg-blue-500 hover:text-white"
+                                   href="{{ path(_currentRoute, _currentParams|merge({p: _currentPage - 1})) }}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Précedent</span>
+                                </a>
+                        {% endif %}
+                        {% for i in 1..lastPage %}
+                            {% if 0 == (_currentPage - nearbyPagesLimit) - loop.index %} {# dot before #}
+                               <a class="py-2 px-4 leading-tight bg-white border border-gray-200 text-blue-700 border-r-0 hover:bg-blue-500 hover:text-white"  href="#">...</a>
+                            {% elseif 0 == (_currentPage + nearbyPagesLimit) - loop.index %} {# dot after #}
+                                <a class="py-2 px-4 leading-tight bg-white border border-gray-200 text-blue-700 border-r-0 hover:bg-blue-500 hover:text-white" href="#">...</a>
+                            {% elseif 0 < (_currentPage - nearbyPagesLimit) - loop.index %} {# hide all before #}
+                            {% elseif 0 > (_currentPage + nearbyPagesLimit) - loop.index %} {# hide all after #}
+                            {% else %}
+                                    <a class="py-2 px-4 leading-tight {% if _currentPage == loop.index  %}{% endif %} bg-white border border-gray-200 text-blue-700 border-r-0 hover:bg-blue-500 hover:text-white" href="{{ path(_currentRoute, _currentParams|merge({p: i})) }}">{{ loop.index }}</a>
+                            {% endif %}
+                        {% endfor %}
+                        {% if _currentPage < lastPage %}
+                                <a  class="py-2 px-4 leading-tight bg-white border border-gray-200 text-blue-700 border-r-0 hover:bg-blue-500 hover:text-white"
+                                   href="{{ path(_currentRoute, _currentParams|merge({p: _currentPage + 1})) }}"
+                                   aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Suivant</span>
+                                </a>
+                        {% endif %}
+                </nav>
+            </div>
+        {% endif %}
+</div>

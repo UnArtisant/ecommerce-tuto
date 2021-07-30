@@ -29,6 +29,9 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
+    .addEntry('chart-bar', './assets/js/graph/chart-bar.js')
+    .addEntry('chart-donut', './assets/js/graph/chart-donut.js')
+    .addEntry('chart-menu', './assets/js/graph/chart-menu.js')
     .addStyleEntry('tailwind', './assets/styles/tailwind.css')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)

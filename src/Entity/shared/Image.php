@@ -19,12 +19,12 @@ trait Image
      *
      * @var File|null
      */
-    private ?File $imageFile;
+    private ?File $imageFile = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $image;
+    private  $image;
 
     public function setImageFile(?File $imageFile = null): void
     {
