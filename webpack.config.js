@@ -32,10 +32,10 @@ Encore
     .addEntry('chart-bar', './assets/js/graph/chart-bar.js')
     .addEntry('chart-donut', './assets/js/graph/chart-donut.js')
     .addEntry('chart-menu', './assets/js/graph/chart-menu.js')
+    .addEntry('handleDefaultAddress', './assets/js/element/_handle_address.js')
+    .addEntry('handleItemCart', './assets/js/element/_handle_cart.js')
     .addStyleEntry('tailwind', './assets/styles/tailwind.css')
 
-    // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
-    .enableStimulusBridge('./assets/controllers.json')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

@@ -8,6 +8,7 @@ use App\Repository\ProductsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -30,6 +31,7 @@ class Products
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"read:cart"})
      */
     private int $id;
 
@@ -40,6 +42,7 @@ class Products
      *      max = 255,
      *      maxMessage = "Product name name cannot be longer than {{ limit }} characters"
      * )
+     * @Groups({"read:cart"})
      */
     private string $name;
 
@@ -49,7 +52,7 @@ class Products
      *      max = 1255,
      *      maxMessage = "Your message name cannot be longer than {{ limit }} characters"
      * )
-     *
+     *@Groups({"read:cart"})
      */
     private string $description;
 
@@ -58,12 +61,14 @@ class Products
      * @ORM\Column(type="integer")
      * @Assert\NotBlank
      * @Assert\GreaterThan(0)
+     * @Groups({"read:cart"})
      */
     private int $price;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank
+     *
      */
     private int $status;
 
@@ -85,6 +90,7 @@ class Products
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:cart"})
      */
     private ?string $slug;
 
@@ -95,6 +101,7 @@ class Products
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"read:cart"})
      */
     private $stock;
 

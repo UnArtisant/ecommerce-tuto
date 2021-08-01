@@ -31,6 +31,11 @@ class UserAddress
      */
     private User $owner;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isDefaultAddress;
+
 
     public function getId(): ?int
     {
@@ -49,5 +54,30 @@ class UserAddress
         return $this;
     }
 
+    /**
+     * @ORM\PrePersist()
+     */
+    public function setDefaultAddress () {
+        if($this->isDefaultAddress === null) {
+            $this->isDefaultAddress = false;
+        }
+    }
 
+
+    public function __toString() : string
+    {
+        return $this->address . " " . $this->getCity();
+    }
+
+    public function getIsDefaultAddress(): ?bool
+    {
+        return $this->isDefaultAddress;
+    }
+
+    public function setIsDefaultAddress(?bool $isDefaultAddress): self
+    {
+        $this->isDefaultAddress = $isDefaultAddress;
+
+        return $this;
+    }
 }

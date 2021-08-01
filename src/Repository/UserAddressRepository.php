@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\UserAddress;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +18,25 @@ class UserAddressRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, UserAddress::class);
+    }
+
+    /**
+     * @param int $user_id
+     * @return int|mixed|string|null
+     * @throws NonUniqueResultException
+     */
+    public function getDefeaultAddress(int $user_id)
+    {
+        try {
+            return $this->createQueryBuilder("a")
+                ->join("a.owner", "u")
+                ->andWhere("u.id = :user_id AND a.isDefaultAddress = true")
+                ->setParameter("user_id", $user_id)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            throw $e;
+        }
     }
 
     // /**

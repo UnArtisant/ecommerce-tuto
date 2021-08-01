@@ -1,9 +1,12 @@
 
 {% extends "base.html.twig" %}
 
+{% block title "Product | " ~  product.name  %}
+
 {% block body %}
 <section class="text-gray-700 body-font overflow-hidden bg-white">
     <div class="container px-5 py-24 mx-auto">
+        {% include "_partials/_flash.html.twig" %}
         <div class="lg:w-4/5 mx-auto flex flex-wrap">
             <img alt="ecommerce" class="lg:w-1/2 w-full object-cover object-center rounded border border-gray-200" src="{{ product.image ? asset("uploads/products/")  ~ product.image : "https://thumbs.dreamstime.com/z/no-image-available-icon-photo-camera-flat-vector-illustration-132483296.jpg" }}">
             <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
@@ -31,11 +34,11 @@
                 <p class="leading-relaxed">{{ product.description }}</p>
                 <div class="flex">
                     <span class="title-font font-medium text-2xl text-gray-900">{{ product.price/100 }}€</span>
-                    <button class="flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">Cart</button>
+                    <button data-value="{{ product.id }}" class="add-cart flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">Cart</button>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
+    {{ encore_entry_script_tags('handleItemCart') }}
 {% endblock %}

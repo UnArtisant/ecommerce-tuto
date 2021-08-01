@@ -1,4 +1,4 @@
-<nav class="relative flex flex-wrap items-center justify-between px-2 py-3 bg-blue-500 mb-3">
+<nav class="relative flex flex-wrap items-center justify-between px-2 py-3 bg-blue-500">
     <div class="container px-4 mx-auto flex flex-wrap items-center justify-between">
         <div class="w-full relative flex justify-between lg:w-auto  px-4 lg:static lg:block lg:justify-start">
             <a class="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white"
@@ -22,11 +22,20 @@
                 </li>
                 <li class="nav-item">
                     <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
-                       href="{{ path("profile_index") }}">
-                        Profile
+                       href="{{ path("cart_index") }}">
+                        <span id="cardItemCount" class="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                            {{ global.cartItemNumber }}
+                        </span>
+                        Cart
                     </a>
                 </li>
                 {% if app.user %}
+                    <li class="nav-item">
+                        <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
+                           href="{{ path("profile_index") }}">
+                            Profile
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
                            href="/logout">

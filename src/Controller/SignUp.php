@@ -5,6 +5,7 @@ namespace App\Controller;
 
 
 use App\Entity\User;
+use App\Entity\UserAddress;
 use App\Form\UserType;
 use App\Service\EmailService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -53,6 +54,7 @@ class SignUp extends AbstractController
         }
 
         $user = new User();
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 

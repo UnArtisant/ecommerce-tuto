@@ -1,0 +1,18 @@
+{{ form_start(form, {"attr" : {"class" : "w-full p-4 px-5 py-5"}}) }}
+<div class="flex flex-row">
+    <h2 class="text-3xl font-semibold mb-3">Shipping Address</h2>
+</div>
+{{ form_row(form.address) }}
+<div class="grid md:grid-cols-3 md:gap-2">
+    {{ form_row(form.zipcode) }}
+    {{ form_row(form.city) }}
+    {{ form_row(form.state) }}
+</div>
+{{ form_row(form.country) }}
+{{ form_row(form.isDefaultAddress) }}
+<div class="items-center pt-2">
+    <button type="submit" class="h-12 w-48 rounded font-medium text-xs bg-blue-500 text-white">
+        Save address
+    </button>
+</div>
+</div>

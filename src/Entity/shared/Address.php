@@ -4,32 +4,58 @@
 namespace App\Entity\shared;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 trait Address
 {
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      max = 255,
+     *      maxMessage = "Address cannot be longer than {{ limit }} characters"
+     * )
      */
     private string $address;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "City cannot be longer than {{ limit }} characters"
+     * )
      */
     private string $city;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      max = 255,
+     *      maxMessage = "State cannot be longer than {{ limit }} characters"
+     * )
      */
     private string $state;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "Country cannot be longer than {{ limit }} characters"
+     * )
      */
     private string $country;
 
     /**
      * @ORM\Column(type="string", length=45)
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      max = 45,
+     *      maxMessage = "Zipcode cannot be longer than {{ limit }} characters"
+     * )
      */
     private string $zipcode;
 

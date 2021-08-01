@@ -1,0 +1,5 @@
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        {% include "_partials/_alert.html.twig" with {"bgColor" : label, "textColor": label, "text" : message} %}
+    {% endfor %}
+{% endfor %}

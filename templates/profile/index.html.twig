@@ -2,5 +2,132 @@
 
 {% block title %}Profil{% endblock %}
 {% block body %}
- <h1>profile</h1>
+    <div class="min-h-screen w-full bg-gray-100">
+        <div class="container mx-auto pt-5">
+            {% include "_partials/_flash.html.twig" %}
+            <div class="flex flex-row justify-between">
+                <div class="w-2/6 bg-white shadow-lg rounded-sm px-4 py-6 mr-4">
+                    <div class="w-full p-4 px-5 py-5">
+                        <div class="flex flex-row">
+                            <h2 class="text-3xl font-semibold mb-3">Current shipping address</h2>
+                        </div>
+                        {% if defaultAddress != null %}
+                            <div class="flex items-center">
+                                <label class="font-bold text-sm mr-2">
+                                    Address:
+                                </label>
+                                <div class="flex items-center border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm">
+                                    {{ defaultAddress.address }}
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <label class="font-bold text-sm mr-2">
+                                    email:
+                                </label>
+                                <div class="flex items-center border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm">
+                                    {{ user.email }}
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <label class="font-bold text-md mb-3 mt-2">
+                                    Shipping Address
+                                </label>
+                                <div class="grid md:grid-cols-2 md:gap-2">
+                                    <div class="flex items-center border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm">
+                                        {{ user.firstname }}
+                                    </div>
+                                    <div class="flex items-center border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm">
+                                        {{ user.lastname }}
+                                    </div>
+                                </div>
+                                <div class="grid md:grid-cols-3 md:gap-2">
+                                    <div class="flex items-center border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm">
+                                        {{ defaultAddress.zipcode }}
+                                    </div>
+                                    <div class="flex items-center border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm">
+                                        {{ defaultAddress.city }}
+                                    </div>
+                                    <div class="flex items-center border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm">
+                                        {{ defaultAddress.state  }}
+                                    </div>
+                                </div>
+                                <div class="flex items-center border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm">
+                                    {{ defaultAddress.country }}
+                                </div>
+                            </div>
+                        {% else %}
+                            <h3 class="font-bold">Aucune address</h3>
+                        {% endif %}
+                        <a href="{{ path("user_address") }}"
+                           class="p-4 bg-blue-500 text-white mt-4 text-md text-center block">Add new address</a>
+                    </div>
+                </div>
+                <div class="w-4/6 bg-white shadow-lg px-4 py-6 rounded-sm">
+                    <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
+                        <span clas="text-green-500">
+                            <svg class="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                        </span>
+                        <span class="tracking-wide">About</span>
+                    </div>
+                    <div class="text-gray-700">
+                        <div class="grid md:grid-cols-2 text-sm">
+                            <div class="grid grid-cols-2">
+                                <div class="px-4 py-2 font-semibold">First Name</div>
+                                <div class="px-4 py-2">{{ user.firstname }}</div>
+                            </div>
+                            <div class="grid grid-cols-2">
+                                <div class="px-4 py-2 font-semibold">Last Name</div>
+                                <div class="px-4 py-2">{{ user.lastname }}</div>
+                            </div>
+                            <div class="grid grid-cols-2">
+                                <div class="px-4 py-2 font-semibold">Current Address</div>
+                                <div class="px-4 py-2">{{ defaultAddress.address is defined ? defaultAddress.address : "Aucune address" }}</div>
+                            </div>
+                            <div class="grid grid-cols-2">
+                                <div class="px-4 py-2 font-semibold">Email.</div>
+                                <div class="px-4 py-2">
+                                    <a class="text-blue-800" href="mailto:jane@example.com">{{ user.email }}</a>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2">
+                                <div class="px-4 py-2 font-semibold">Phone.</div>
+                                <div class="px-4 py-2">
+                                    <a class="text-blue-800" href="phone:jane@example.com">06 86 14 55 30</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <button
+                            class="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">
+                        Update Information
+                    </button>
+                    {% if defaultAddress != null %}
+                        <form id="handleDefaultAddress" class="relative w-full border-none">
+                            <label>Default Address</label>
+                            <select placeholder="" id="updateDefaultAddress"
+                                    class="bg-white text-gray-400 border rounded h-10 w-full focus:outline-none px-2 mt-2 text-sm inline-block py-3 pl-3 pr-8 leading-tight w-full">
+                                <option id="defaultValue" value="{{ defaultAddress.id }}" disabled selected>default address</option>
+                                {% for address in addresses %}
+                                    <option value="{{ address.id }}">{{ address.address }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
+                                <i class="fas fa-chevron-down text-gray-400"></i>
+                            </div>
+                            <button type="submit" class="mt-2 bg-blue-500 text-white p-4">Update</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if defaultAddress != null %}
+        {{ encore_entry_script_tags('handleDefaultAddress') }}
+    {% endif %}
 {% endblock %}

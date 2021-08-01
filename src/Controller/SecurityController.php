@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
@@ -24,6 +25,25 @@ class SecurityController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+    }
+
+
+    /**
+     * @Route("/gateway", name="security.gateway")
+     */
+    public function redirectByPermission() {
+       $user = $this->getUser();
+
+       if(!$user) {
+           throw new AccessDeniedException("You don't have access to that ressource");
+       }
+
+       if(in_array("ROLE_ADMIN", $user->getRoles())) {
+           return $this->redirectToRoute("admin");
+       }
+
+        return $this->redirectToRoute("profile_index");
+
     }
 
     /**

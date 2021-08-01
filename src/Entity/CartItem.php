@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Entity\shared\Timestamp;
 use App\Repository\CartItemRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CartItemRepository::class)
@@ -20,17 +22,24 @@ class CartItem
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("read:cart")
      */
     private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Products::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"read:cart"})
      */
     private Products $product;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("read:cart")
+     * @Assert\NotBlank
+     * @Assert\GreaterThan(
+     *     value = 0
+     * )
      */
     private int $quantity;
 
@@ -49,6 +58,7 @@ class CartItem
     {
         return $this->product;
     }
+
 
     public function setProduct(Products $product): self
     {
@@ -79,5 +89,10 @@ class CartItem
         $this->owner = $owner;
 
         return $this;
+    }
+
+    public function getTotal() : int
+    {
+        return $this->product->getPrice() * $this->quantity;
     }
 }
