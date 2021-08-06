@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block body %}
+
+    <div class="min-h-screen w-full bg-gray-100">
+        <div class="container mx-auto pt-5">
+            {% include "_partials/_flash.html.twig" %}
+            {{ form_start(form, {"attr": {"class": "flex flex-row justify-between"}}) }}
+                <div class="w-2/6 bg-white shadow-lg rounded-sm px-4 py-6 mr-4">
+                    <div class="w-full p-4 px-5 py-5">
+                        {% include "checkout/_order_address.html.twig" %}
+                    </div>
+                </div>
+                <div class="w-4/6 bg-white shadow-lg px-4 py-6 rounded-sm">
+                    <div class="flex flex-row">
+                        <h2 class="text-3xl font-semibold mb-3">Account information</h2>
+                    </div>
+                    <div class="grid md:grid-cols-2 md:gap-2">
+                        {{ form_row(form.firstname) }}
+                        {{ form_row(form.lastname) }}
+                    </div>
+                    {{ form_row(form.email) }}
+
+                    <div class="flex mt-10 mb-5">
+                        <h3 class="font-semibold text-gray-600 text-xs uppercase w-2/5">Product Details</h3>
+                        <h3 class="font-semibold text-center text-gray-600 text-xs uppercase w-1/5 text-center">
+                            Quantity</h3>
+                        <h3 class="font-semibold text-center text-gray-600 text-xs uppercase w-1/5 text-center">Price</h3>
+                        <h3 class="font-semibold text-center text-gray-600 text-xs uppercase w-1/5 text-center">Total</h3>
+                    </div>
+
+                    {% for product in global.cartItem %}
+                        {% include "cart/_item.html.twig" with {"product" : app.user ? product.product : product, "quantity" : product.quantity} %}
+                    {% else %}
+                        <div class="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
+                            <p>No item yet</p>
+                        </div>
+                    {% endfor %}
+
+                    <button class="p-4 bg-blue-500 text-white w-full rounded-sm mt-5">Order</button>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

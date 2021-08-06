@@ -1,0 +1,12 @@
+<div class="w-full p-4 px-5 py-5">
+    <div class="flex flex-row">
+        <h2 class="text-3xl font-semibold mb-3">Shipping Address</h2>
+    </div>
+    {{ form_row(form.orderAddress.location.address) }}
+    <div class="grid md:grid-cols-3 md:gap-2">
+        {{ form_row(form.orderAddress.location.zipcode) }}
+        {{ form_row(form.orderAddress.location.city) }}
+        {{ form_row(form.orderAddress.location.state) }}
+    </div>
+    {{ form_row(form.orderAddress.location.country) }}
+</div>

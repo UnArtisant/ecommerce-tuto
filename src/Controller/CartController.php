@@ -3,17 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\CartItem;
-use App\Entity\OrderItem;
 use App\Entity\User;
-use App\Repository\ProductsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
 {
+
 
     private EntityManagerInterface $em;
 
@@ -28,10 +27,10 @@ class CartController extends AbstractController
 
     /**
      * @Route("/cart", name="cart_index")
-     * @param Session $session
+     * @param SessionInterface $session
      * @return Response
      */
-    public function index(Session $session): Response
+    public function index(SessionInterface $session): Response
     {
         /** @var User $user*/
         $user = $this->getUser();
@@ -42,9 +41,9 @@ class CartController extends AbstractController
         if($user) {
             $cartItems = $user->getCartItems();
         } else {
-
+          $cartItems = $session->get(CartItem::CART_SESSION, []);
         }
-        dump($cartItems);
+
 
         return $this->render('cart/index.html.twig', [
             "products" => $cartItems
@@ -52,11 +51,5 @@ class CartController extends AbstractController
     }
 
 
-    /**
-     * @Route("cart/delete/{id}", name="card_remove_item")
-     */
-    public function removeItem(CartItem $cartItem) {
-      dd($cartItem);
-    }
 
 }

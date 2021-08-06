@@ -35,7 +35,7 @@ class SecurityController extends AbstractController
        $user = $this->getUser();
 
        if(!$user) {
-           throw new AccessDeniedException("You don't have access to that ressource");
+           return $this->createAccessDeniedException("You don't have access to this ressource");
        }
 
        if(in_array("ROLE_ADMIN", $user->getRoles())) {

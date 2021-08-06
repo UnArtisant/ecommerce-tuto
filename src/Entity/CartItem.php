@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CartItem
 {
 
+    const CART_SESSION = "CART_ITEMS";
+
     use Timestamp;
 
     /**

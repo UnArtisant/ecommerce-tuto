@@ -34,6 +34,7 @@ Encore
     .addEntry('chart-menu', './assets/js/graph/chart-menu.js')
     .addEntry('handleDefaultAddress', './assets/js/element/_handle_address.js')
     .addEntry('handleItemCart', './assets/js/element/_handle_cart.js')
+    .addEntry('handleCartChange', './assets/js/element/_handle_cart_change.js')
     .addStyleEntry('tailwind', './assets/styles/tailwind.css')
 
 

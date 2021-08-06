@@ -7,6 +7,7 @@ use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
@@ -15,6 +16,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Order
 {
+
+    const STATUS_DRAFT = 0;
+    const STATUS_WAITING = 1;
+    const STATUS_PAYED = 2;
 
     use Timestamp;
 
@@ -37,16 +42,20 @@ class Order
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private string $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private string $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Email
      */
     private string $email;
 
@@ -58,7 +67,7 @@ class Order
     /**
      * @ORM\OneToOne(targetEntity=OrderAddress::class, mappedBy="owner", cascade={"persist", "remove"})
      */
-    private $orderAddress;
+    private OrderAddress $orderAddress;
 
     /**
      * @ORM\OneToMany(targetEntity=OrderItem::class, mappedBy="orderTransaction")
@@ -68,6 +77,8 @@ class Order
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();
+        $this->status = self::STATUS_DRAFT;
+        $this->total_price = 0;
     }
 
     public function getId(): ?int
@@ -193,5 +204,15 @@ class Order
         }
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function computeName() {
+        if(empty($this->name)) {
+            $this->name = "order n°" . mt_rand(1000000000, 9999999999);
+        }
     }
 }

@@ -1,29 +1,21 @@
-<div class="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
+<div data-price="{{ product.price / 100 }}" class="cart-item flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
     <div class="flex w-2/5"> <!-- product -->
         <div class="w-20">
-            <img class="h-24" src="{{ product.product.image ? asset("uploads/products/")  ~ product.product.image : "https://thumbs.dreamstime.com/z/no-image-available-icon-photo-camera-flat-vector-illustration-132483296.jpg" }}" alt="">
+            <img class="h-24" src="{{ product.image ? asset("uploads/products/")  ~ product.image : "https://thumbs.dreamstime.com/z/no-image-available-icon-photo-camera-flat-vector-illustration-132483296.jpg" }}" alt="">
         </div>
         <div class="flex flex-col justify-between ml-4 flex-grow">
-            <span class="font-bold text-sm">{{ product.product.name }}</span>
+            <span class="font-bold text-sm">{{ product.name }}</span>
 
-            <form method="post" action="{{ path("card_remove_item", {"id": product.id}) }}"
-                  onsubmit="return confirm('Supprimer un fournisseur est irréversible');">
-                <input type="hidden" name="_method" value="DELETE">
-                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
-                <button class="font-semibold hover:text-red-500 text-gray-500 text-xs">Remove</button>
-            </form>
+            <div>
+                <button data-value="{{ product.id }}" class="remove-item font-semibold hover:text-red-500 text-gray-500 text-xs">Remove</button>
+            </div>
         </div>
     </div>
     <div class="flex justify-center w-1/5">
-        <svg class="fill-current text-gray-600 w-3" viewBox="0 0 448 512"><path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"/>
-        </svg>
 
-        <input class="mx-2 border text-center w-8" type="text" value="{{ product.quantity }}">
+        <input data-prevValue="{{ quantity }}" min="1" max="{{ product.stock }}" class="quantity-input-js mx-2 border text-center w-8" type="number" value="{{ quantity }}">
 
-        <svg class="fill-current text-gray-600 w-3" viewBox="0 0 448 512">
-            <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"/>
-        </svg>
     </div>
-    <span class="text-center w-1/5 font-semibold text-sm">{{ product.product.price / 100 }}€</span>
-    <span class="text-center w-1/5 font-semibold text-sm">{{ product.total / 100 }}€</span>
+    <span class="text-center w-1/5 font-semibold text-sm">{{ product.price / 100 }}€</span>
+    <span class="total-price-js text-center w-1/5 font-semibold text-sm">{{ product.price * quantity / 100 }}€</span>
 </div>
